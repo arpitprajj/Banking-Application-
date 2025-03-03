@@ -3,6 +3,7 @@ package com.banking.Banking_Application.service.Impl;
 
 import com.banking.Banking_Application.dto.AccountDto;
 import com.banking.Banking_Application.entity.Account;
+import com.banking.Banking_Application.exception.ResourceNotFoundException;
 import com.banking.Banking_Application.repository.AccountRepository;
 import com.banking.Banking_Application.service.AccountService;
 import org.modelmapper.ModelMapper;
@@ -42,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDto depositAmount(Long id, Double amount) {
-        Account account=this.accountRepository.findById(id).orElseThrow(()->new RuntimeException("Account Does not exist"));
+        Account account=this.accountRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Account","Account id",id));
         Double avlAmount=account.getBalance();
         account.setBalance(avlAmount+amount);
         Account newAccount=this.accountRepository.save(account);
